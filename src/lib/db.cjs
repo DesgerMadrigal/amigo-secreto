@@ -1,24 +1,22 @@
 // src/lib/db.cjs
 const mariadb = require('mariadb');
 
-// OJO: como lo tienes escrito:
-// isProduction ? usa 201.191.205.140:4011
-// : (else) usa 172.29.132.35:3306
-// Ajusta el 0/1 según quieras DEV o PROD.
+// 1 = usar 201.191.205.140:4011 ; 0 = usar 172.29.132.35:3306
 const isProduction = 1;
 
 const dbConfig = isProduction
-  ? { host: '201.191.205.140', port: 4011 } // (tu "prod")
-  : { host: '172.29.132.35', port: 3306 };  // (tu "dev")
+  ? { host: '201.191.205.140', port: 4011 }
+  : { host: '172.29.132.35', port: 3306 };
 
 const pool = mariadb.createPool({
   host: dbConfig.host,
   port: dbConfig.port,
   user: 'root',
   password: 'new_password',
-  database: 'BDA',               // ← cambiado a DBA
+  database: 'BDA',
   connectionLimit: 5,
-  allowPublicKeyRetrieval: true, // útil si el server lo requiere
+  allowPublicKeyRetrieval: true,
+  bigIntAsNumber: true, // <-- evita BigInt en respuestas
 });
 
 console.log(`Conectando a la base de datos en ${dbConfig.host}:${dbConfig.port}`);

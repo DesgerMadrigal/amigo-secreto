@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "dev:lan": "next dev --turbopack -H 0.0.0.0 -p 3000",
     "build": "next build --turbopack",
     "start": "next start",
     "db:ping": "tsx src/scripts/ping.ts",
@@ -12,6 +13,7 @@
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.2",
     "dotenv": "^17.2.2",
     "mariadb": "^3.4.5",
     "next": "15.5.3",
