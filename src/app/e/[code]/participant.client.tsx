@@ -246,7 +246,7 @@ export default function ParticipantClient({
                 maxLength={64}
               />
               <p className="mt-1 text-xs text-gray-500">
-                Sugerencia: sin datos personales, estilo “RenoVeloz” 🦌
+                Pon tu Nombre y un Apellido
               </p>
             </div>
 
