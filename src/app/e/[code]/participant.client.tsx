@@ -26,7 +26,8 @@ export default function ParticipantClient({
   const [myPair, setMyPair] = useState<any>(initial.myPair);
 
   async function join() {
-    setLoading(true); setErr(null);
+    setLoading(true);
+    setErr(null);
     try {
       const res = await fetch(`/api/events/${code}/join`, { method: "POST" });
       const j = await res.json().catch(() => ({}));
@@ -41,7 +42,8 @@ export default function ParticipantClient({
 
   async function saveProfile(e: React.FormEvent) {
     e.preventDefault();
-    setLoading(true); setErr(null);
+    setLoading(true);
+    setErr(null);
     try {
       const res = await fetch(`/api/events/${code}/me`, {
         method: "PUT",
@@ -108,8 +110,19 @@ export default function ParticipantClient({
             fill="none"
             aria-hidden
           >
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4A4 4 0 008 12H4z" />
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v4A4 4 0 008 12H4z"
+            />
           </svg>
         )}
         {children}
@@ -117,11 +130,25 @@ export default function ParticipantClient({
     );
   };
 
-  const Card = ({ children, title, subtitle, icon }: { children: React.ReactNode; title: string; subtitle?: string; icon?: string }) => (
+  const Card = ({
+    children,
+    title,
+    subtitle,
+    icon,
+  }: {
+    children: React.ReactNode;
+    title: string;
+    subtitle?: string;
+    icon?: string;
+  }) => (
     <div className="relative p-[1px] rounded-2xl bg-gradient-to-r from-rose-300 via-amber-200 to-emerald-300">
       <div className="rounded-2xl bg-white/90 backdrop-blur-sm ring-1 ring-black/5 p-6">
         <div className="flex items-center gap-2">
-          {icon && <span className="text-xl" aria-hidden>{icon}</span>}
+          {icon && (
+            <span className="text-xl" aria-hidden>
+              {icon}
+            </span>
+          )}
           <h2 className="text-xl font-semibold text-gray-900">{title}</h2>
         </div>
         {subtitle && <p className="mt-1 text-sm text-gray-700">{subtitle}</p>}
@@ -133,18 +160,30 @@ export default function ParticipantClient({
   const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => (
     <input
       {...props}
-      className={`w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 ${props.className ?? ""}`}
+      className={`w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 ${
+        props.className ?? ""
+      }`}
     />
   );
 
-  const TextArea = (props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) => (
+  const TextArea = (
+    props: React.TextareaHTMLAttributes<HTMLTextAreaElement>
+  ) => (
     <textarea
       {...props}
-      className={`w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 ${props.className ?? ""}`}
+      className={`w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 ${
+        props.className ?? ""
+      }`}
     />
   );
 
-  const Alert = ({ children, type = "error" }: { children: React.ReactNode; type?: "error" | "info" }) => {
+  const Alert = ({
+    children,
+    type = "error",
+  }: {
+    children: React.ReactNode;
+    type?: "error" | "info";
+  }) => {
     const styles =
       type === "error"
         ? "border-red-200 bg-red-50 text-red-800"
@@ -152,7 +191,9 @@ export default function ParticipantClient({
     const icon = type === "error" ? "⚠️" : "ℹ️";
     return (
       <div className={`mt-3 rounded-lg border px-3 py-2 text-sm ${styles}`}>
-        <span className="mr-2" aria-hidden>{icon}</span>
+        <span className="mr-2" aria-hidden>
+          {icon}
+        </span>
         {children}
       </div>
     );
@@ -162,7 +203,8 @@ export default function ParticipantClient({
     <div className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-4">
       <div className="text-sm text-emerald-800">Te tocó con</div>
       <div className="mt-1 text-2xl font-semibold text-emerald-900 flex items-center gap-2">
-        <span aria-hidden>🎁</span>{myPair.target_alias}
+        <span aria-hidden>🎁</span>
+        {myPair.target_alias}
       </div>
       <div className="mt-3 text-sm">
         <b className="text-emerald-900">Wishlist:</b>
@@ -181,26 +223,37 @@ export default function ParticipantClient({
 
         {!me ? (
           <div className="mt-2">
-            <p className="text-sm text-gray-700">Aún no formas parte de este evento.</p>
+            <p className="text-sm text-gray-700">
+              Aún no formas parte de este evento.
+            </p>
             <Button onClick={join} loading={loading} className="mt-3">
               {loading ? "Uniendo…" : "Unirme al evento"}
             </Button>
           </div>
         ) : (
-          <form onSubmit={saveProfile} className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <form
+            onSubmit={saveProfile}
+            className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4"
+          >
             <div>
-              <label className="block text-sm font-medium text-gray-900">Alias público</label>
+              <label className="block text-sm font-medium text-gray-900">
+                Nombre
+              </label>
               <Input
                 value={alias}
                 onChange={(e) => setAlias(e.target.value)}
                 placeholder="Tu alias visible"
                 maxLength={64}
               />
-              <p className="mt-1 text-xs text-gray-500">Sugerencia: sin datos personales, estilo “RenoVeloz” 🦌</p>
+              <p className="mt-1 text-xs text-gray-500">
+                Sugerencia: sin datos personales, estilo “RenoVeloz” 🦌
+              </p>
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-900">Wishlist</label>
+              <label className="block text-sm font-medium text-gray-900">
+                Wishlist
+              </label>
               <TextArea
                 rows={5}
                 value={wishlist}
@@ -209,9 +262,12 @@ export default function ParticipantClient({
               />
               <div className="mt-1 flex items-center justify-between">
                 <p className="text-xs text-gray-500">
-                  Tip: Lista 3–5 ideas concretas. Ej: “Taza térmica 350 ml, talla M, libros sci-fi”.
+                  Tip: Lista 3–5 ideas concretas. Ej: “Taza térmica 350 ml,
+                  talla M, libros sci-fi”.
                 </p>
-                <span className="text-[11px] text-gray-400">{wishlist.length}/1000</span>
+                <span className="text-[11px] text-gray-400">
+                  {wishlist.length}/1000
+                </span>
               </div>
             </div>
 
@@ -221,7 +277,10 @@ export default function ParticipantClient({
               </Button>
               <Button
                 variant="ghost"
-                onClick={() => { setAlias(initial.me?.alias || ""); setWishlist(initial.me?.wishlist || ""); }}
+                onClick={() => {
+                  setAlias(initial.me?.alias || "");
+                  setWishlist(initial.me?.wishlist || "");
+                }}
               >
                 Deshacer
               </Button>
@@ -231,15 +290,19 @@ export default function ParticipantClient({
       </Card>
 
       {/* Amigo secreto */}
-      <Card title="Tu amigo secreto" icon="🧦" subtitle={!me ? undefined : !canReveal ? (
-        <>
-          Aún no se puede revelar. Espera a que{" "}
-          {initial.event.reveal_mode === "on_lock"
-            ? "el organizador selle la mezcla"
-            : "llegue la fecha del evento"}
-          .
-        </>
-      ) : undefined}>
+      <Card
+        title="Tu amigo secreto"
+        icon="🧦"
+        subtitle={
+          !me
+            ? undefined
+            : !canReveal
+            ? initial.event.reveal_mode === "on_lock"
+              ? "Aún no se puede revelar. Espera a que el organizador selle la mezcla."
+              : "Aún no se puede revelar. Espera a que llegue la fecha del evento."
+            : undefined
+        }
+      >
         {!me && <p className="text-gray-700">Primero únete al evento.</p>}
         {me && !canReveal && (
           <Alert type="info">
@@ -249,36 +312,39 @@ export default function ParticipantClient({
         {pairBox}
       </Card>
 
-      {/* Participantes */}
+      {/* Participantes: solo Nombre */}
       <Card title="Participantes" icon="🗓️" subtitle="Personas unidas al evento.">
         <div className="rounded-xl border border-gray-200 overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-gray-50/80">
               <tr>
-                <th className="text-left p-3 text-gray-900 font-medium">Alias</th>
-                <th className="text-left p-3 text-gray-900 font-medium">Registro</th>
+                <th className="text-left p-3 text-gray-900 font-medium">
+                  Nombre
+                </th>
               </tr>
             </thead>
             <tbody>
               {participants.map((p: any, idx: number) => {
-                const initial = (p.alias?.trim?.()[0] || "?").toUpperCase();
+                const initialLetter = (p.alias?.trim?.()[0] || "?").toUpperCase();
                 return (
-                  <tr key={idx} className="border-t hover:bg-gray-50/60 transition">
+                  <tr
+                    key={`${p.alias}-${idx}`}
+                    className="border-t hover:bg-gray-50/60 transition"
+                  >
                     <td className="p-3 text-gray-900">
                       <div className="flex items-center gap-3">
                         <span className="grid place-items-center h-8 w-8 rounded-full bg-emerald-100 text-emerald-800 text-sm font-semibold">
-                          {initial}
+                          {initialLetter}
                         </span>
                         <span className="truncate">{p.alias}</span>
                       </div>
                     </td>
-                    <td className="p-3 text-gray-700">{new Date(p.created_at).toLocaleString()}</td>
                   </tr>
                 );
               })}
               {participants.length === 0 && (
                 <tr>
-                  <td className="p-4 text-gray-700" colSpan={2}>
+                  <td className="p-4 text-gray-700" colSpan={1}>
                     Aún no hay participantes.
                   </td>
                 </tr>

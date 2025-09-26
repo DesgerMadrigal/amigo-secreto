@@ -90,7 +90,7 @@ export default function RegisterPage() {
               <div className="h-10 w-10 grid place-items-center rounded-full bg-rose-100">🧸</div>
               <div>
                 <h1 className="text-2xl font-semibold text-gray-900">Crear cuenta</h1>
-                <p className="text-sm text-gray-700">Tu alias será también tu usuario.</p>
+                <p className="text-sm text-gray-700">Pon tu Nombre y un Apellido</p>
               </div>
             </div>
 
@@ -103,7 +103,7 @@ export default function RegisterPage() {
             <form onSubmit={onSubmit} className="space-y-4">
               <div className="space-y-1.5">
                 <label className="block text-sm font-medium text-gray-900">
-                  Alias (también será tu usuario)
+                  Nombre
                 </label>
                 <input
                   className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
@@ -149,7 +149,7 @@ export default function RegisterPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-sm font-medium text-gray-900">Wishlist (opcional)</label>
+                <label className="block text-sm font-medium text-gray-900">Tu lista de deseos(despues lo puedes cambiar)</label>
                 <textarea
                   rows={5}
                   className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"

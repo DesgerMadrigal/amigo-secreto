@@ -19,24 +19,39 @@ type EventRow = {
   allow_single: 0 | 1;
 };
 
+/** Formatea la fecha en la zona horaria del evento SIN imprimir el nombre de la zona. */
 function fmtLocal(d: string | Date, tz: string) {
-  let dt: Date;
+  // date_utc viene de DB como UTC (p.ej. 'YYYY-MM-DD HH:mm:ss')
+  let asUTC: Date;
   if (d instanceof Date) {
-    dt = new Date(
-      Date.UTC(
-        d.getFullYear(),
-        d.getMonth(),
-        d.getDate(),
-        d.getHours(),
-        d.getMinutes(),
-        d.getSeconds()
-      )
-    );
+    // Aseguramos que se interprete como UTC
+    const iso = `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(
+      d.getUTCDate()
+    ).padStart(2, "0")}T${String(d.getUTCHours()).padStart(2, "0")}:${String(
+      d.getUTCMinutes()
+    ).padStart(2, "0")}:${String(d.getUTCSeconds()).padStart(2, "0")}Z`;
+    asUTC = new Date(iso);
   } else {
     const iso = d.includes("T") ? d : d.replace(" ", "T");
-    dt = new Date(iso + "Z");
+    asUTC = new Date(iso + "Z");
   }
-  return `${dt.toLocaleString()} (${tz})`;
+
+  return new Intl.DateTimeFormat("es-CR", {
+    dateStyle: "short",
+    timeStyle: "medium",
+    timeZone: tz || "America/Costa_Rica",
+    // Importante: no incluir timeZoneName para NO mostrar "(America/Costa_Rica)"
+  }).format(asUTC);
+}
+
+/** Colones CR formateados. */
+function fmtCRC(n: number | string) {
+  const v = typeof n === "string" ? Number(n) : n ?? 0;
+  return new Intl.NumberFormat("es-CR", {
+    style: "currency",
+    currency: "CRC",
+    maximumFractionDigits: 2,
+  }).format(v);
 }
 
 // Detecta columnas reales en `pairs`
@@ -185,7 +200,7 @@ export default async function EventPage({
           <div className="w-full max-w-md rounded-2xl bg-white shadow ring-1 ring-black/5 p-6">
             <h1 className="text-2xl font-semibold text-gray-900">Inicia sesión para unirte</h1>
             <p className="mt-2 text-sm text-gray-700">
-              Evento <b>{ev.name}</b> — {fmtLocal(ev.date_utc, ev.tz)} — Presupuesto ₡{Number(ev.budget_max).toFixed(2)}
+              Evento <b>{ev.name}</b> — {fmtLocal(ev.date_utc, ev.tz)} — Presupuesto {fmtCRC(ev.budget_max)}
             </p>
             <Link
               href={`/login?callbackUrl=${encodeURIComponent(`/e/${ev.code}`)}`}
@@ -215,15 +230,27 @@ export default async function EventPage({
 
       <main className="px-4 py-8">
         <div className="mx-auto max-w-5xl space-y-6">
+          {/* Detalles del evento (sin "Estado" y sin mostrar el nombre de la zona) */}
           <div className="rounded-2xl bg-white shadow ring-1 ring-black/5 p-6">
             <h2 className="text-xl font-semibold text-gray-900">Detalles del evento</h2>
             <div className="mt-2 text-sm">
-              <div>Fecha: <b className="text-gray-900">{fmtLocal(ev.date_utc, ev.tz)}</b></div>
-              <div>Monto: <b className="text-gray-900">₡{Number(ev.budget_max).toFixed(2)}</b></div>
-              <div>Modo de revelación: <b className="text-gray-900">
-                {ev.reveal_mode === "on_lock" ? "Al sellar la mezcla" : "En la fecha del evento"}
-              </b></div>
-              <div>Estado: <b className="text-gray-900">{ev.status}</b></div>
+              <div>
+                Fecha:{" "}
+                <b className="text-gray-900">{fmtLocal(ev.date_utc, ev.tz)}</b>
+              </div>
+              <div>
+                Monto:{" "}
+                <b className="text-gray-900">{fmtCRC(ev.budget_max)}</b>
+              </div>
+              <div>
+                Modo de revelación:{" "}
+                <b className="text-gray-900">
+                  {ev.reveal_mode === "on_lock"
+                    ? "Al sellar la mezcla"
+                    : "En la fecha del evento"}
+                </b>
+              </div>
+              {/* Línea de estado eliminada */}
             </div>
           </div>
 
